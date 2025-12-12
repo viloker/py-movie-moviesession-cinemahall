@@ -16,11 +16,6 @@ def create_movie_session(
 
 def get_movies_sessions(session_date: str = None) -> QuerySet | None:
     if session_date:
-        date = session_date.split("-")
-        date = datetime(
-            year=int(date[0]),
-            month=int(date[1]),
-            day=int(date[2]))
         return MovieSession.objects.filter(show_time__date=session_date)
 
     return MovieSession.objects.all()
@@ -48,5 +43,5 @@ def update_movie_session(session_id: int,
     return movie_session
 
 
-def delete_movie_session_by_id(session_id: int) -> MovieSession:
-    return MovieSession.objects.get(pk=session_id).delete()
+def delete_movie_session_by_id(session_id: int) -> None:
+    MovieSession.objects.get(pk=session_id).delete()

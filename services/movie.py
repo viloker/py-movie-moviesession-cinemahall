@@ -3,8 +3,8 @@ from django.db.models import QuerySet
 
 
 def get_movies(
-        genres_ids: list[int] | str = None,
-        actors_ids: list[int] | str = None) -> QuerySet:
+        genres_ids: list[int] = None,
+        actors_ids: list[int] = None) -> QuerySet:
     queryset = Movie.objects.all()
 
     if genres_ids is None and actors_ids is None:
@@ -12,13 +12,9 @@ def get_movies(
 
     if genres_ids:
         queryset = queryset.filter(genres__id__in=genres_ids)
-        if genres_ids == "only":
-            return queryset
 
     if actors_ids:
         queryset = queryset.filter(actors__id__in=actors_ids)
-        if actors_ids == "only":
-            return queryset
 
     return queryset
 
@@ -36,9 +32,9 @@ def create_movie(
                                  description=movie_description)
 
     if genres_ids:
-        movie.genres.add(*genres_ids)
+        movie.genres.set(genres_ids)
 
     if actors_ids:
-        movie.actors.add(*actors_ids)
+        movie.actors.set(actors_ids)
 
     return movie
